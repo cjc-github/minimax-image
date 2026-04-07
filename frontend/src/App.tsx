@@ -32,6 +32,7 @@ function App() {
   const [subjectReference, setSubjectReference] = useState<string | null>(null);
 
   const { images, isLoading, error, generate, clearImages } = useImageGeneration();
+  const [debugMode, setDebugMode] = useState(false);
 
   useEffect(() => {
     if (apiKey) {
@@ -101,6 +102,47 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* 调试信息面板 */}
+        {debugMode && images.length > 0 && (
+          <div className="mt-6 p-4 bg-gray-100 border-2 border-gray-300 rounded-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold">🔧 调试信息</h3>
+              <button
+                onClick={() => setDebugMode(false)}
+                className="text-gray-600 hover:text-gray-800"
+              >
+                关闭
+              </button>
+            </div>
+            <div className="space-y-2 text-sm">
+              <p><strong>生成图片数量：</strong> {images.length}</p>
+              <div>
+                <strong>图片URL列表：</strong>
+                <ul className="ml-4 mt-2 space-y-1">
+                  {images.map((img, idx) => (
+                    <li key={idx} className="break-all">
+                      <a href={img.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                        图片 {idx + 1}: {img.url}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p><strong>生成时间：</strong> {new Date(images[0]?.timestamp).toLocaleString()}</p>
+            </div>
+          </div>
+        )}
+
+        {/* 启用调试按钮 */}
+        {!debugMode && (
+          <button
+            onClick={() => setDebugMode(true)}
+            className="fixed bottom-4 right-4 px-4 py-2 bg-gray-800 text-white rounded-full shadow-lg hover:bg-gray-900"
+          >
+            🔧 调试
+          </button>
+        )}
 
         <footer className="mt-12 text-center text-gray-600">
           <p className="text-lg">✨ 由 MiniMax AI 强力驱动 ✨</p>

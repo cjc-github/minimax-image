@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-image {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 图片加载测试</h1>
+    <p id="status">正在测试...</p>
+    <img id="test-image" style="display: none;" />
+    <div id="info"></div>
+
+    <script>
+        // 测试图片URL（MiniMax示例图片）
+        const testUrl = 'https://picsum.photos/800/600';
+        
+        const img = document.getElementById('test-image');
+        const status = document.getElementById('status');
+        const info = document.getElementById('info');
+        
+        img.onload = function() {
+            status.textContent = '✅ 图片加载成功！';
+            status.className = 'success';
+            img.style.display = 'block';
+            info.innerHTML = `
+                <h3>测试结果：</h3>
+                <p>✅ 图片可以正常显示</p>
+                <p>✅ 浏览器可以加载外部图片</p>
+                <h3>如果你的图片无法显示：</h3>
+                <ul>
+                    <li>请检查MiniMax API返回的URL是否正确</li>
+                    <li>确保API密钥有效且有配额</li>
+                    <li>尝试在新标签页中打开图片URL</li>
+                </ul>
+            `;
+        };
+        
+        img.onerror = function() {
+            status.textContent = '❌ 图片加载失败';
+            status.className = 'error';
+            info.innerHTML = `
+                <h3>可能的原因：</h3>
+                <ul>
+                    <li>网络问题</li>
+                    <li>图片URL无效</li>
+                    <li>CORS跨域问题</li>
+                </ul>
+            `;
+        };
+        
+        img.src = testUrl;
+    </script>
+</body>
+</html>
